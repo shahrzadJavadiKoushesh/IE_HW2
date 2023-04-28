@@ -14,7 +14,7 @@ const baseCourse = mongoose.model(
 const approvedCourse = baseCourse.discriminator(
     "approved_course",
     mongoose.Schema({})
-)
+);
 
 const semesterCourse = baseCourse.discriminator(
     "semester_course",
@@ -26,7 +26,7 @@ const semesterCourse = baseCourse.discriminator(
         capaticy: Number,
         semester: String,
     })
-)
+);
 
 module.exports = {
     Course: baseCourse,
