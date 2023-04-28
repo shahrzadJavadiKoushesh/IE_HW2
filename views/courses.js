@@ -58,7 +58,7 @@ async function createCourse(req, res) {
 async function updateCourse(req, res) {
     id = req.params.id
     if (id == undefined){
-        res.status(400).send("send id is required to update")
+        res.status(400).send("sending id is required to update")
         return
     }
     console.log(req.body)
