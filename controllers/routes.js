@@ -19,6 +19,12 @@ router.get('/admin/Students',  userView.getAllProfs);
 router.get('/admin/Student/:id', userView.getProfessorById);
 router.delete('/admin/Student/:id', userView.deleteProfById);
 router.post('/admin/Student', userView.createUser);
-router.put('/admin/Student/:id', userView.updateProfessor)
+router.put('/admin/Student/:id', userView.updateStudent)
+
+router.get('/admin/managers',  userView.getAllEdManagers);
+router.get('/admin/manager/:id', userView.getEdManagerById);
+router.delete('/admin/manager/:id', userView.deleteEdManagerById);
+router.post('/admin/manager', userView.createUser);
+router.put('/admin/manager/:id', userView.updateEdManager)
 
 module.exports = router

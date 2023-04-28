@@ -102,10 +102,73 @@ async function deleteStudentById(req, res){
         message: "student deleted"
     })
 }
+
+async function updateStudent(req, res){
+    id = req.params.id
+    if (id == undefined){
+        res.status(400).send("sending id is required to update")
+        return
+    }
+    console.log(req.body)
+    const student = await usersModels.User.findOneAndUpdate(id)
+    console.log(student)
+    res.status(200).json({
+        message: "student updated"
+    })
+}
+
+async function getAllEdManagers(req, res){
+    const managers = await usersModels.EducationManager.find({})
+    res.status(200).send(managers)
+}
+
+async function getEdManagerById(req, res){
+    id = req.params.id
+    if (id == undefined){
+        res.status(400).send("sending id is required to get")
+        return
+    }
+    const EdManager = await usersModels.User.findById(id)
+    res.status(200).send(EdManager)
+}
+
+async function deleteEdManagerById(req, res){
+    id = req.params.id
+    if (id == undefined){
+        res.status(400).send("sending id is required to delete")
+        return
+    }
+    const EdManager = await usersModels.User.findByIdAndDelete(id)
+    res.status(200).json({
+        message: "EdManager deleted"
+    })
+}
+
+async function updateEdManager(req, res){
+    id = req.params.id
+    if (id == undefined){
+        res.status(400).send("sending id is required to update")
+        return
+    }
+    console.log(req.body)
+    const EdManager = await usersModels.User.findOneAndUpdate(id)
+    console.log(EdManager)
+    res.status(200).json({
+        message: "EdManager updated"
+    })
+}
 module.exports = {
     getAllProfs: getAllProfs,
     getProfessorById: getProfessorById,
     deleteProfById: deleteProfById,
     createUser: createUser,
-    updateProfessor: updateProfessor
+    updateProfessor: updateProfessor,
+    getAllStudents: getAllStudents, 
+    getStudentById: getStudentById,
+    deleteStudentById: deleteStudentById,
+    updateStudent: updateStudent,
+    getAllEdManagers: getAllEdManagers,
+    getEdManagerById: getEdManagerById,
+    deleteEdManagerById: deleteEdManagerById,
+    updateEdManager: updateEdManager
 }
