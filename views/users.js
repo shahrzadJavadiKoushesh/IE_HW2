@@ -27,6 +27,7 @@ async function deleteProfById(req, res){
     })
 }
 
+//creating all kinds of users
 async function createUser(req, res) {
     const userType = req.body.userType
     let userModel = null;
@@ -75,6 +76,32 @@ async function updateProfessor(req, res){
     })
 }
 
+async function getAllStudents(req, res){
+    const students = await usersModels.User.find({})
+    res.status(200).send(students)
+}
+
+async function getStudentById(req, res){
+    id = req.params.id
+    if (id == undefined){
+        res.status(400).send("sending id is required to get")
+        return
+    }
+    const student = await usersModels.User.findById(id)
+    res.status(200).send(student)
+}
+
+async function deleteStudentById(req, res){
+    id = req.params.id
+    if (id == undefined){
+        res.status(400).send("sending id is required to delete")
+        return
+    }
+    const student = await usersModels.User.findByIdAndDelete(id)
+    res.status(200).json({
+        message: "student deleted"
+    })
+}
 module.exports = {
     getAllProfs: getAllProfs,
     getProfessorById: getProfessorById,

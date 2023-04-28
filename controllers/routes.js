@@ -15,4 +15,10 @@ router.delete('/admin/Professor/:id', userView.deleteProfById);
 router.post('/admin/Professor', userView.createUser);
 router.put('/admin/Professor/:id', userView.updateProfessor)
 
+router.get('/admin/Students',  userView.getAllProfs);
+router.get('/admin/Student/:id', userView.getProfessorById);
+router.delete('/admin/Student/:id', userView.deleteProfById);
+router.post('/admin/Student', userView.createUser);
+router.put('/admin/Student/:id', userView.updateProfessor)
+
 module.exports = router
