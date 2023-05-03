@@ -1,6 +1,5 @@
 express = require("express");
 mongoose = require("mongoose");
-JsonWevToken = require("jsonwebtoken");
 routes = require("./controllers/routes.js");
 
 mongoose.connect('mongodb://127.0.0.1:27017/').then(()=>{
@@ -13,6 +12,6 @@ const app = express();
 app.use(express.json());
 app.use(routes);
 
-app.listen(8090, () => {
-    console.log('server listening on port 8090');
+app.listen(8091, () => {
+    console.log('server listening on port 8091');
 })

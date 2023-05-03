@@ -1,13 +1,53 @@
 const usersModels = require("../models/users.js");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
-async function getAllProfs(req, res){
+
+async function login(req, res) {
+
+    try {
+        const { email, password } = req.body;
+
+        //Validate user input
+        if (!(email && password)) {
+            res.status(400).send("All input is required");
+        }
+
+        const user = await usersModels.User.findOne({ email });
+
+        console.log(user);
+        console.log(user.password);
+        console.log(password);
+        if (user && ((password == user.password))) {
+            // Create token
+            const token = jwt.sign(
+                { user_id: user._id, email },
+                    "process.env.TOKEN_KEY",
+                
+                {
+                    expiresIn: "2h",
+                }
+            );
+
+            user.token = token;
+
+            res.status(200).json(user);
+            return
+        }
+
+        res.status(400).send("Invalid Credentials");
+    } catch (err) {
+        console.log(err);
+    }
+}
+async function getAllProfs(req, res) {
     const professors = await usersModels.Professor.find({})
     res.status(200).send(professors)
 }
 
-async function getProfessorById(req, res){
+async function getProfessorById(req, res) {
     id = req.params.id
-    if (id == undefined){
+    if (id == undefined) {
         res.status(400).send("sending id is required to get")
         return
     }
@@ -15,9 +55,9 @@ async function getProfessorById(req, res){
     res.status(200).send(professor)
 }
 
-async function deleteProfById(req, res){
+async function deleteProfById(req, res) {
     id = req.params.id
-    if (id == undefined){
+    if (id == undefined) {
         res.status(400).send("sending id is required to delete")
         return
     }
@@ -31,25 +71,25 @@ async function deleteProfById(req, res){
 async function createUser(req, res) {
     const userType = req.body.userType
     let userModel = null;
-    switch(userType) {
-        case "student": 
+    switch (userType) {
+        case "student":
             userModel = usersModels.Student
-        break;
+            break;
         case "professor":
             userModel = usersModels.Professor
-        break;
+            break;
         case "education_manager":
             userModel = usersModels.EducationManager
-        break;
+            break;
         case "IT_manager":
             userModel = usersModels.ITManager
-        break;
+            break;
         default:
             res.status(400).json({
                 message: "sending user type is required."
             })
     }
-    try{
+    try {
         const professor = await userModel.create(req.body)
         console.log("here")
         res.status(201).json({
@@ -57,14 +97,14 @@ async function createUser(req, res) {
             professor: professor,
         })
     } catch (err) {
-        res.status(500).json({message: "an error occured in saving professor"})
+        res.status(500).json({ message: "an error occured in saving professor" })
     }
 }
 
-async function updateProfessor(req, res){
+async function updateProfessor(req, res) {
     id = req.params.id
     id = req.params.id
-    if (id == undefined){
+    if (id == undefined) {
         res.status(400).send("sending id is required to update")
         return
     }
@@ -76,14 +116,14 @@ async function updateProfessor(req, res){
     })
 }
 
-async function getAllStudents(req, res){
+async function getAllStudents(req, res) {
     const students = await usersModels.User.find({})
     res.status(200).send(students)
 }
 
-async function getStudentById(req, res){
+async function getStudentById(req, res) {
     id = req.params.id
-    if (id == undefined){
+    if (id == undefined) {
         res.status(400).send("sending id is required to get")
         return
     }
@@ -91,9 +131,9 @@ async function getStudentById(req, res){
     res.status(200).send(student)
 }
 
-async function deleteStudentById(req, res){
+async function deleteStudentById(req, res) {
     id = req.params.id
-    if (id == undefined){
+    if (id == undefined) {
         res.status(400).send("sending id is required to delete")
         return
     }
@@ -103,9 +143,9 @@ async function deleteStudentById(req, res){
     })
 }
 
-async function updateStudent(req, res){
+async function updateStudent(req, res) {
     id = req.params.id
-    if (id == undefined){
+    if (id == undefined) {
         res.status(400).send("sending id is required to update")
         return
     }
@@ -117,14 +157,14 @@ async function updateStudent(req, res){
     })
 }
 
-async function getAllEdManagers(req, res){
+async function getAllEdManagers(req, res) {
     const managers = await usersModels.EducationManager.find({})
     res.status(200).send(managers)
 }
 
-async function getEdManagerById(req, res){
+async function getEdManagerById(req, res) {
     id = req.params.id
-    if (id == undefined){
+    if (id == undefined) {
         res.status(400).send("sending id is required to get")
         return
     }
@@ -132,9 +172,9 @@ async function getEdManagerById(req, res){
     res.status(200).send(EdManager)
 }
 
-async function deleteEdManagerById(req, res){
+async function deleteEdManagerById(req, res) {
     id = req.params.id
-    if (id == undefined){
+    if (id == undefined) {
         res.status(400).send("sending id is required to delete")
         return
     }
@@ -144,9 +184,9 @@ async function deleteEdManagerById(req, res){
     })
 }
 
-async function updateEdManager(req, res){
+async function updateEdManager(req, res) {
     id = req.params.id
-    if (id == undefined){
+    if (id == undefined) {
         res.status(400).send("sending id is required to update")
         return
     }
@@ -158,12 +198,13 @@ async function updateEdManager(req, res){
     })
 }
 module.exports = {
+    login: login,
     getAllProfs: getAllProfs,
     getProfessorById: getProfessorById,
     deleteProfById: deleteProfById,
     createUser: createUser,
     updateProfessor: updateProfessor,
-    getAllStudents: getAllStudents, 
+    getAllStudents: getAllStudents,
     getStudentById: getStudentById,
     deleteStudentById: deleteStudentById,
     updateStudent: updateStudent,

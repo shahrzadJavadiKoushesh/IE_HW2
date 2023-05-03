@@ -2,6 +2,7 @@ express = require("express");
 courseView = require("../views/courses.js");
 userView = require("../views/users.js")
 const router = express.Router();
+router.post('/login', userView.login)
 
 router.get('/courses', courseView.getAllCourses);
 router.get('/course/:id', courseView.getCourseById);
