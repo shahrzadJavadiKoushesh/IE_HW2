@@ -17,7 +17,7 @@ router.delete('/admin/Professor/:id',auth, userView.deleteProfById);
 router.post('/admin/Professor',auth ,userView.createUser);
 router.put('/admin/Professor/:id',auth, userView.updateProfessor)
 
-router.get('/admin/Students',auth,  userView.getAllProfs);
+router.get('/admin/Students',auth, userView.getAllStudents);
 router.get('/admin/Student/:id',auth, userView.getProfessorById);
 router.delete('/admin/Student/:id',auth, userView.deleteProfById);
 router.post('/admin/Student',auth, userView.createUser);
