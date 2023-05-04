@@ -86,6 +86,11 @@ async function updateProfessor(req, res) {
         return
     }
     console.log(req.body)
+    //professor can update itself
+    if (req.user.user_id != req.params.id){
+        res.status(400).send("Each professor can only update itself");
+        return
+    }
     const professor = await usersModels.User.findOneAndUpdate(id)
     console.log(professor)
     res.status(200).json({
