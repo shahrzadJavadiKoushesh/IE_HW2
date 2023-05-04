@@ -4,10 +4,10 @@ const bcrypt = require("bcrypt");
 
 
 async function login(req, res) {
-
     try {
         const { email, password } = req.body;
-
+        console.log(email)
+        console.log(password)
         //Validate user input
         if (!(email && password)) {
             res.status(400).send("All input is required");
@@ -16,14 +16,11 @@ async function login(req, res) {
         const user = await usersModels.User.findOne({ email });
 
         console.log(user);
-        console.log(user.password);
-        console.log(password);
         if (user && ((password == user.password))) {
             // Create token
             const token = jwt.sign(
-                { user_id: user._id, email },
-                    "process.env.TOKEN_KEY",
-                
+                { user_id: user._id, email: user.email },
+                    "config.TOKEN_KEY",
                 {
                     expiresIn: "2h",
                 }
@@ -31,7 +28,7 @@ async function login(req, res) {
 
             user.token = token;
 
-            res.status(200).json(user);
+            res.status(200).json({token: token});
             return
         }
 

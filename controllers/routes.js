@@ -1,6 +1,7 @@
 express = require("express");
 courseView = require("../views/courses.js");
-userView = require("../views/users.js")
+userView = require("../views/users.js");
+auth = require("../middleware/auth.js");
 const router = express.Router();
 router.post('/login', userView.login)
 
@@ -10,7 +11,7 @@ router.delete('/course/:id', courseView.deleteCourseById);
 router.post('/course', courseView.createCourse);
 router.put('/course/:id', courseView.updateCourse);
 
-router.get('/admin/Professors',  userView.getAllProfs);
+router.get('/admin/Professors',auth, userView.getAllProfs);
 router.get('/admin/Professor/:id', userView.getProfessorById);
 router.delete('/admin/Professor/:id', userView.deleteProfById);
 router.post('/admin/Professor', userView.createUser);
