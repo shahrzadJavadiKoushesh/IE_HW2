@@ -3,9 +3,10 @@ const jwt = require("jsonwebtoken");
 
 async function login(req, res) {
     try {
-        const { email, password } = req.body;
+        const { email, password, __t } = req.body;
         console.log(email)
         console.log(password)
+        console.log(__t)
         //Validate user input
         if (!(email && password)) {
             res.status(400).send("All input is required");
@@ -17,7 +18,7 @@ async function login(req, res) {
         if (user && ((password == user.password))) {
             // Create token
             const token = jwt.sign(
-                { user_id: user._id, email: user.email },
+                { user_id: user._id, email: user.email, userType: user.__t },
                     "config.TOKEN_KEY",
                 {
                     expiresIn: "2h",
@@ -62,31 +63,12 @@ async function deleteProfById(req, res) {
     })
 }
 
-//creating all kinds of users
-async function createUser(req, res) {
-    const userType = req.body.userType
+async function createProfessor(req, res) {
     let userModel = null;
-    switch (userType) {
-        case "student":
-            userModel = usersModels.Student
-            break;
-        case "professor":
-            userModel = usersModels.Professor
-            break;
-        case "education_manager":
-            userModel = usersModels.EducationManager
-            break;
-        case "IT_manager":
-            userModel = usersModels.ITManager
-            break;
-        default:
-            res.status(400).json({
-                message: "sending user type is required."
-            })
-    }
+    userModel = usersModels.Professor
     try {
         const professor = await userModel.create(req.body)
-        console.log("here")
+        // console.log("here")
         res.status(201).json({
             message: "professor successfully created.",
             professor: professor,
@@ -138,6 +120,22 @@ async function deleteStudentById(req, res) {
     })
 }
 
+async function createStudent(req, res) {
+    let userModel = null;
+    userModel = usersModels.Student
+    try {
+        const student = await userModel.create(req.body)
+        // console.log("here")
+        res.status(201).json({
+            message: "Student successfully created.",
+            student: student,
+        })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: "an error occured in saving student" })
+    }
+}
+
 async function updateStudent(req, res) {
     id = req.params.id
     if (id == undefined) {
@@ -145,6 +143,12 @@ async function updateStudent(req, res) {
         return
     }
     console.log(req.body)
+    //student can update itself
+    if (req.user.user_id != req.params.id){
+        res.status(400).send("Each student can only update itself");
+        return
+    }
+
     const student = await usersModels.User.findOneAndUpdate(id)
     console.log(student)
     res.status(200).json({
@@ -179,6 +183,22 @@ async function deleteEdManagerById(req, res) {
     })
 }
 
+async function createEdManager(req, res) {
+    let userModel = null;
+    userModel = usersModels.EducationManager
+    try {
+        const EdManager = await userModel.create(req.body)
+        // console.log("here")
+        res.status(201).json({
+            message: "Education Manager successfully created.",
+            EdManager: EdManager,
+        })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: "an error occured in saving Education Manager" })
+    }
+}
+
 async function updateEdManager(req, res) {
     id = req.params.id
     if (id == undefined) {
@@ -197,14 +217,16 @@ module.exports = {
     getAllProfs: getAllProfs,
     getProfessorById: getProfessorById,
     deleteProfById: deleteProfById,
-    createUser: createUser,
+    createProfessor: createProfessor,
     updateProfessor: updateProfessor,
     getAllStudents: getAllStudents,
     getStudentById: getStudentById,
     deleteStudentById: deleteStudentById,
+    createStudent: createStudent,
     updateStudent: updateStudent,
     getAllEdManagers: getAllEdManagers,
     getEdManagerById: getEdManagerById,
     deleteEdManagerById: deleteEdManagerById,
+    createEdManager: createEdManager,
     updateEdManager: updateEdManager
 }
