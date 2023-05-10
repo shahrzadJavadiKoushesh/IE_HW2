@@ -4,9 +4,10 @@ express = require("express");
 courseView = require("../views/courses.js");
 userView = require("../views/users.js");
 auth = require("../middleware/auth.js");
-// permission = require("../middleware/permission.js");
 const router = express.Router();
+
 router.post('/login', userView.login)
+
 // IT Manager Routes
 router.get('/admin/Professors',[auth, permission.isITManager], userView.getAllProfs);
 router.get('/admin/Professor/:id',[auth,permission.isITManager], userView.getProfessorById);
