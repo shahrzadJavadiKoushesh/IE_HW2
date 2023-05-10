@@ -31,6 +31,7 @@ router.get('/course/:id',[auth, permission.isStudentOrProfessorOrEducationManage
 router.delete('/course/:id',[auth, permission.isEductaionManager], courseView.deleteCourseById);
 router.post('/course',[auth, permission.isEductaionManager], courseView.createCourse);
 router.put('/course/:id',[auth, permission.isEductaionManager], courseView.updateCourse);
+router.get('/courses/:field',[auth, permission.isStudentOrProfessorOrEducationManager], courseView.getAllCoursesFileterdBasedOnField);
 
 router.get('/Students',[auth, permission.isEductaionManager], userView.getAllStudents);
 router.get('/Student/:id',[auth, permission.isEductaionManager], userView.getProfessorById);

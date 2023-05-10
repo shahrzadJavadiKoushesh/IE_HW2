@@ -5,6 +5,12 @@ async function getAllCourses(req, res) {
     res.status(200).send(courses)
 }
 
+async function getAllCoursesFileterdBasedOnField(req, res){
+    field = req.params.field
+    const courses = await courseModels.Course.find({field: field})
+    res.status(200).send(courses)
+}
+
 async function getCourseById(req, res) {
     id = req.params.id
     if (id == undefined){
@@ -75,4 +81,5 @@ module.exports = {
     deleteCourseById: deleteCourseById,
     createCourse: createCourse,
     updateCourse: updateCourse,
+    getAllCoursesFileterdBasedOnField: getAllCoursesFileterdBasedOnField
 }
