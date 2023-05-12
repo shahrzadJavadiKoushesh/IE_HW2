@@ -1,0 +1,1007 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/SHAHRZADJKOUSHESH/IE-HW2/1.0.0
+  - description: SwaggerHub API Auto Mocking
+    url: http://localhost:8091
+info:
+  description: This is a simple API for second HW of Internet Engineering.
+  version: "1.0.0"
+  title: Simple API
+  contact:
+    email: shahrzadjkoushesh@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: IT_manager
+    description: Secured It_manager-only calls
+  - name: Student
+    description: Secured Student-only calls
+  - name: Professor
+    description: Secured Professor-only calls
+  - name: education_manager
+    description: Secured education_manager-only calls
+paths:
+  /login:
+    post:
+      tags:
+        - IT_manager
+        - education_manager
+        - Student
+        - Professor
+        
+      summary: login as a roll
+      
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: 123456@gmail.com
+                password:
+                  type: string
+                  example: 123456123456
+      responses:
+        '200':
+          description: User logged in Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                   type: string
+                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9              
+        '400':
+          description: Invalid ceridentals
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: username or password is wrong
+  /admin/Professor:
+    post:
+      tags: 
+        - IT_manager
+      summary: add a professor
+      operationId: addProfessor
+      description: add a professor
+      responses:
+        '201':
+          description: professor successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Professor'
+        '403':
+          description: A token is required for authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /admin/Proffespr/{id}:              
+    put:
+      tags: 
+        - IT_manager
+      summary: update a professor
+      operationId: updateProfessor
+      description: Updates a Professor with the given id
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          example: 644c4f88e760c26261b9c29d
+          required: true
+      
+      requestBody:
+        description: new professor data updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Professor'
+      
+      responses:
+        '200':
+          description: professor updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Professor'
+        '403':
+          description: 'A token is required for authentication'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: 'Each professor can only update itself'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags: 
+        - IT_manager
+      summary: deletes a professor
+      operationId: deleteProfessor
+      description: Deletes a professor with the given id
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          example: 644c4f88e760c26261b9c29d
+          required: true
+      
+      responses:
+        '200':
+          description: professor deleted 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Professor'
+        '401':
+          description: 'A token is required for authentication'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+                
+    get:
+      tags: 
+        - IT_manager
+      summary: get a professor with the given id
+      operationId: getProfessor
+      description: Gets a professor with the given id
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          example: 644c4f88e760c26261b9c29d
+          required: true
+      
+      responses:
+        '200':
+          description: prefessor gotten successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Professor'
+                
+        '401':
+          description: 'A token is required for authentication'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+  /admin/professors:
+    get:
+      tags:
+        - IT_manager
+      summary: get all professors
+      operationId: getAllProfessors
+      description: |
+        Getting all professors
+      responses:
+        '200':
+          description: Gives all professors in the database
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Professor'
+        '401':
+          description: 'A token is required for authentication'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+  /admin/Student:
+    post:
+      tags: 
+        - IT_manager
+      summary: add a studnet
+      operationId: addStudent
+      description: add a student
+      responses:
+        '201':
+          description: student successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '403':
+          description: A token is required for authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /admin/Student/{id}:              
+    put:
+      tags: 
+        - IT_manager
+      summary: update a student
+      operationId: updateStudent
+      description: Updates a Student with the given id
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          example: 644c4f88e760c26261b9c29d
+          required: true
+      
+      requestBody:
+        description: new student data updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      
+      responses:
+        '200':
+          description: student updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '403':
+          description: 'A token is required for authentication'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: 'Each student can only update itself'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags: 
+        - IT_manager
+      summary: deletes a student
+      operationId: deleteStudent
+      description: Deletes a student with the given id
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          example: 644c4f88e760c26261b9c29d
+          required: true
+      
+      responses:
+        '200':
+          description: student deleted 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '401':
+          description: 'A token is required for authentication'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+                
+    get:
+      tags: 
+        - IT_manager
+      summary: get a student with the given id
+      operationId: getStudent
+      description: Gets a student with the given id
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          example: 644c4f88e760c26261b9c29d
+          required: true
+      
+      responses:
+        '200':
+          description: student gotten successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+                
+        '401':
+          description: 'A token is required for authentication'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+  /admin/students:
+    get:
+      tags:
+        - IT_manager
+      summary: get all students
+      operationId: getAllStudents
+      description: |
+        Getting all professors
+      responses:
+        '200':
+          description: Gives all students in the database
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+        '401':
+          description: 'A token is required for authentication'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+  /admin/manager:
+    post:
+      tags: 
+        - IT_manager
+      summary: add a education manager
+      operationId: addEdManager
+      description: add a education manager
+      responses:
+        '201':
+          description: education manager successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manager'
+        '403':
+          description: A token is required for authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /admin/manager/{id}:              
+    put:
+      tags: 
+        - IT_manager
+      summary: update a manager
+      operationId: updateManager
+      description: Updates a Education manager with the given id
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          example: 644c4f88e760c26261b9c29d
+          required: true
+      
+      requestBody:
+        description: new Manaager data updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Manager'
+      
+      responses:
+        '200':
+          description: education manager updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manager'
+        '403':
+          description: 'A token is required for authentication'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '400':
+          description: 'Each manager can only update itself'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags: 
+        - IT_manager
+      summary: deletes a manager
+      operationId: deleteManager
+      description: Deletes a Manager with the given id
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          example: 644c4f88e760c26261b9c29d
+          required: true
+      
+      responses:
+        '200':
+          description: education manager deleted 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manager'
+        '401':
+          description: 'A token is required for authentication'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+                
+    get:
+      tags: 
+        - IT_manager
+      summary: get a manager with the given id
+      operationId: getManager
+      description: Gets a Manager with the given id
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          example: 644c4f88e760c26261b9c29d
+          required: true
+      
+      responses:
+        '200':
+          description: Manager gotten successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manager'
+                
+        '401':
+          description: 'A token is required for authentication'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+  /admin/managers:
+    get:
+      tags:
+        - IT_manager
+      summary: get all managers
+      operationId: getAllManagers
+      description: |
+        Getting all Managers
+      responses:
+        '200':
+          description: Gives all Managers in the database
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Manager'
+        '401':
+          description: 'A token is required for authentication'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+                
+  /course:
+    post:
+      tags:
+        - manager
+      summary: create a courses
+      operationId: createCourse
+      description: |
+        create a course
+      responses:
+        '200':
+          description: course added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '401':
+          description: A token is required for authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+                
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+              
+  /course/{id}:
+    put:
+      tags: 
+        - manager
+      summary: update a course
+      operationId: updateCourse
+      description: Updates a course with the given id
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          example: 644c4f88e760c26261b9c29d
+          required: true
+      
+      requestBody:
+        description: new course data updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+      
+      responses:
+        '200':
+          description: course updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '403':
+          description: 'A token is required for authentication'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      
+    delete:
+      tags:
+        - manager
+      summary: delete a course
+      operationId: deleteCourse
+      description: Deletes a course with the given id
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          example: 644c4f88e760c26261b9c29d
+          required: true
+      
+      responses:
+        '200':
+          description: course deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+                
+        '403':
+          description: A token is required for authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError' 
+                
+    get:
+      tags: 
+        - professor
+        - student
+        - manager
+      summary: get a course with given the id
+      operationId: getCourse
+      description: Gets a course with given id
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          example: 644c4f88e760c26261b9c29d
+          required: true
+      
+      responses:
+        '200':
+          description: course gotten
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+                
+        '403':
+          description: A token is required for authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+              
+  /courses:
+    get:
+      tags:
+        - professor
+        - student
+        - manager
+      summary: get all courses
+      operationId: getAllCourses
+      parameters: 
+        - in: query
+          name: field
+          required: false
+          schema:
+            type: string
+            example: "computer"
+      description: |
+        Getting all courses.
+      responses:
+        '200':
+          description: Get all courses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+     
+        '403':
+          description: A token is required for authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+                
+  /students:
+    get:
+      tags:
+        - manager
+      summary: get all students
+      operationId: getAllStudentsNotManager
+      description: |
+        Getting all students.
+      responses:
+        '200':
+          description: get All Students
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+        '400':
+          description: bad input parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+        '403':
+          description: A token is required for authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+                
+  /student/{id}:
+    put:
+      tags: 
+        - student
+      summary: update a student 
+      operationId: updateStudentNotManager
+      description: Updates a student with the given id
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          example: 644c4f88e760c26261b9c29d
+          required: true
+      
+      requestBody:
+        description: new student data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      
+      responses:
+        '200':
+          description: student updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '403':
+          description: A token is required for authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+                
+    get:
+      tags: 
+        - student
+        - manager
+      summary: get a student with given id
+      operationId: getStudentNotManager
+      description: Gets a student with given the id
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          example: 644c4f88e760c26261b9c29d
+          required: true
+      
+      responses:
+        '200':
+          description: student gotten
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+                
+        '403':
+          description: A token is required for authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+                
+  /professors:
+    get:
+      tags:
+        - manager
+      summary: get all professors
+      operationId: getAllProfessorsNotManager
+      description: |
+        Getting all professors in one request.
+      responses:
+        '200':
+          description: get all professors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Professor'
+        '400':
+          description: bad input parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                
+        '403':
+          description: A token is required for authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        
+  /professor/{id}:
+    put:
+      tags: 
+        - professor
+      summary: update a professor
+      operationId: updateProfessorNotManager
+      description: Updates a student with the given id
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          example: 644c4f88e760c26261b9c29d
+          required: true
+      
+      requestBody:
+        description: new professor data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Professor'
+      
+      responses:
+        '200':
+          description: professor updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Professor'
+        '400':
+          description: 'validation error.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: A token is required for authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+    get:
+      tags: 
+        - professor
+      summary: get a professor with the given id
+      operationId: getProfessorNotManager
+      description: Gets a professor with the given id
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: string
+          example: 123876321acdf876f
+          required: true
+      
+      responses:
+        '200':
+          description: prefessor fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Professor'
+        '403':
+          description: A token is required for authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    User:
+      type: object
+      required: 
+        - userId
+        - password
+      properties:
+        userId:
+          type: string
+          minLength: 5
+          example: 99243027
+        password:
+          type: string
+          minLength: 5
+          example: 123456
+        name:
+          type: string
+          example: Shahrzad Javadi Koushesh
+        email: 
+          type: string
+          format: email
+        phoneNumber:
+          type: string
+          example: "1234567890"
+          
+        
+    Student:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            section: 
+              type: string
+              example: "bachlor"
+            year: 
+              type: string
+              format: date
+              example: 2023-05-31
+            term: 
+              type: string
+              example: "400/401"
+            avg: 
+              type: number
+              example: 17
+            faculty: 
+              type: string
+              example: "computer engineering"
+            subject:
+              type: string
+              example: Engineering
+    
+         
+    Professor:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            credit: 
+              type: string
+              example: "professor"
+            faculty: 
+              type: string
+              example: "computer"
+            subject:
+              type: string
+              example: Engineering
+    
+         
+    Manager:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties:
+            faculty: 
+              type: string
+              example: "computer"
+          
+    Course:
+      type: object
+      required:
+        - courseType
+      
+      properties:
+      
+        name: 
+          type: string
+          example: DS
+        prerequisites: 
+          type: array
+          items:
+            $ref: '#/components/schemas/SemesterCourse'
+        corequisites: 
+          type: array
+          items:
+            $ref: '#/components/schemas/SemesterCourse'
+        unit: 
+          type: number
+          example: 3
+          
+        field: 
+          type: string
+          example: computer
+          
+        courseType:
+          type: string
+          enum:
+            - approved
+            - semester
+          default: approved
+      
+    SemesterCourse:
+      allOf:
+        - $ref: '#/components/schemas/Course'
+        - type: object
+          required: 
+            - courseType  
+          properties:
+            classDates: 
+              type: string
+              format: date
+              example: 2023-12-5
+            examDate: 
+              type: string
+              format: date
+              example: 2002-05-31
+            examPlace: 
+              type: string
+              example: Class 110
+            professorName: 
+              type: string
+              example: teacher1
+            capacity: 
+              type: number
+              format: int32
+              example: 20
+            semester: 
+              type: string
+              example: 400/401
+    ErrorResponse:
+      properties:
+        message:
+          type: string
+          example: error message
+    ForbidenErrorResponse:
+      properties:
+        message:
+          type: string
+          example: you have not access to this resource
+    NotFoundErrorResponse:
+      properties:
+        message:
+          type: string
+          example: not found
+    UnauthorizedError:
+      properties:
+        message:
+          type: string
+          example: token is invalid.
+    
