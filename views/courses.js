@@ -1,4 +1,5 @@
 const courseModels = require("../models/courses.js");
+const userModels = require("../models/users.js");
 
 async function getAllCourses(req, res) {
     const courses = await courseModels.Course.find({})
@@ -7,9 +8,17 @@ async function getAllCourses(req, res) {
 
 async function getAllCoursesFileterdBasedOnField(req, res){
     field = req.params.field
-    const courses = await courseModels.Course.find({field: field})
+    user = userModels.User.findById(req.user.id)
+    filters = {}
+    if (user.__t == "student"){
+        filters.faculty = user.faculty;
+    }
+    if (field != undefined){
+        filters.field = field;
+    }
+    const courses = await courseModels.Course.find(filters)
     res.status(200).send(courses)
-}
+}   
 
 async function getCourseById(req, res) {
     id = req.params.id
@@ -59,7 +68,6 @@ async function createCourse(req, res) {
         res.status(500).json({message: "an error occured in saving course"})
     }
 }
-
 
 async function updateCourse(req, res) {
     id = req.params.id
