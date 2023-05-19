@@ -27,12 +27,11 @@ router.delete('/admin/manager/:id',[auth, permission.isITManager], userView.dele
 router.post('/admin/manager',[auth, permission.isITManager] , userView.createEdManager);
 router.put('/admin/manager/:id', [auth, permission.isITManager],  userView.updateEdManager)
 // 
-router.get('/courses',[auth, permission.isStudentOrProfessorOrEducationManager], courseView.getAllCourses);
 router.get('/course/:id',[auth, permission.isStudentOrProfessorOrEducationManager], courseView.getCourseById);
 router.delete('/course/:id',[auth, permission.isEductaionManager], courseView.deleteCourseById);
 router.post('/course',[auth, permission.isEductaionManager], courseView.createCourse);
 router.put('/course/:id',[auth, permission.isEductaionManager], courseView.updateCourse);
-router.get('/courses/:field',[auth, permission.isStudentOrProfessorOrEducationManager], courseView.getAllCoursesFileterdBasedOnField);
+router.get('/courses',[auth, permission.isStudentOrProfessorOrEducationManager], courseView.getAllCoursesFileterdBasedOnField);
 
 router.get('/Students',[auth, permission.isEductaionManager], userView.getAllStudents);
 router.get('/Student/:id',[auth, permission.isEductaionManager], userView.getProfessorById);

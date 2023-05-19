@@ -27,6 +27,10 @@ async function getCourseById(req, res) {
         return
     }
     const course = await courseModels.Course.findById(id)
+    if (!course) {
+    	res.status(404).send("course not found")
+    	return
+    }
     res.status(200).send(course)
 }
 
@@ -36,7 +40,12 @@ async function deleteCourseById(req, res) {
         res.status(400).send("sending id is required to delete")
         return
     }
-    const course = await courseModels.Course.findOneAndDelete(id)
+    const course = await courseModels.Course.findByIdAndDelete(id)
+    console.log(course)
+    if (!course) {
+    	res.status(404).send("course not found")
+    	return
+    }
     res.status(200).json({
         message: "course deleted."
     })
@@ -77,6 +86,10 @@ async function updateCourse(req, res) {
     }
     console.log(req.body)
     const course = await courseModels.Course.findByIdAndUpdate(id, req.body)
+    if (!course) {
+    	res.status(404).send("course not found")
+    	return
+    }
     console.log(course)
     res.status(200).json({
         messaage: "course updated"

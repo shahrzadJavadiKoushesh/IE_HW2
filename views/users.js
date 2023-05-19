@@ -10,6 +10,7 @@ async function login(req, res) {
         //Validate user input
         if (!(email && password)) {
             res.status(400).send("All input is required");
+            return
         }
 
         const user = await usersModels.User.findOne({ email });
@@ -48,6 +49,10 @@ async function getProfessorById(req, res) {
         return
     }
     const professor = await usersModels.User.findById(id)
+    if (!professor) {
+        res.status(404).send("professor not found")
+        return
+    }
     res.status(200).send(professor)
 }
 
@@ -58,6 +63,10 @@ async function deleteProfById(req, res) {
         return
     }
     const professor = await usersModels.User.findByIdAndDelete(id)
+    if (!professor) {
+        res.status(404).send("professor not found")
+        return
+    }
     res.status(200).json({
         message: "professor deleted"
     })
@@ -92,7 +101,10 @@ async function updateProfessor(req, res) {
         return
     }
     const professor = await usersModels.User.findOneAndUpdate(id)
-    console.log(professor)
+    if (!professor) {
+        res.status(404).send("professor not found")
+        return
+    }
     res.status(200).json({
         message: "professor updated"
     })
@@ -110,6 +122,10 @@ async function getStudentById(req, res) {
         return
     }
     const student = await usersModels.User.findById(id)
+    if (!student) {
+        res.status(404).send("student not found")
+        return
+    }
     res.status(200).send(student)
 }
 
@@ -120,6 +136,10 @@ async function deleteStudentById(req, res) {
         return
     }
     const student = await usersModels.User.findByIdAndDelete(id)
+    if (!student) {
+        res.status(404).send("student not found")
+        return
+    }
     res.status(200).json({
         message: "student deleted"
     })
@@ -155,6 +175,10 @@ async function updateStudent(req, res) {
     }
 
     const student = await usersModels.User.findOneAndUpdate(id)
+    if (!student) {
+        res.status(404).send("student not found")
+        return
+    }
     console.log(student)
     res.status(200).json({
         message: "student updated"
@@ -183,6 +207,10 @@ async function deleteEdManagerById(req, res) {
         return
     }
     const EdManager = await usersModels.User.findByIdAndDelete(id)
+    if (!EdManager) {
+        res.status(404).send("EdManager not found")
+        return
+    }
     res.status(200).json({
         message: "EdManager deleted"
     })
@@ -212,6 +240,10 @@ async function updateEdManager(req, res) {
     }
     console.log(req.body)
     const EdManager = await usersModels.User.findOneAndUpdate(id)
+    if (!EdManager) {
+        res.status(404).send("EdManager not found")
+        return
+    }
     console.log(EdManager)
     res.status(200).json({
         message: "EdManager updated"
